@@ -21,8 +21,11 @@ class handler(BaseHTTPRequestHandler):
         # Currently we only support JSON
         length = int(self.headers['content-length'])
         form = json.loads(self.rfile.read(length))
+
+        # Load custom plugin
+        asset = apprise.AppriseAsset(plugin_paths='onebot.py')
         
-        apobj = apprise.Apprise()
+        apobj = apprise.Apprise(asset=asset)
 
         for url in form['urls'].split(","):
             apobj.add(url)
